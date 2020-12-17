@@ -21,9 +21,9 @@ pipeline {
             }
           }
           stage('deploy') {
-            environment {
+            //environment {
                 //CLIENT_ID = sh (script:'az webapp identity assign --resource-group dels-jenkins-rg --name azure-app-api --query principalId --output tsv',, returnStdout: true).trim()
-            }
+            //}
             steps {
                 withCredentials([azureServicePrincipal('azure_service_principal')]) {
                       // login to Azure

@@ -19,7 +19,7 @@ node {
         appName: webAppName,
         dockerImageName: imageName,
         dockerImageTag: imageTag,
-        dockerRegistryEndpoint: [credentialsId: 'acr', url: "http://$registryServer"]
+        dockerRegistryEndpoint: [credentialsId: 'delsreg', url: "http://$registryServer"]
 
   }
 }

@@ -9,7 +9,7 @@ node {
 
   stage('deploy') {
     def resourceGroup = 'dels-jenkins-rg'
-    def webAppName = 'azure-app-api'
+    def webAppName = 'dels-docker-app'
     def registryServer = 'delsreg.azurecr.io'
     def imageTag = sh script: 'git describe | tr -d "\n"', returnStdout: true
     def imageName = "$registryServer/calculator"
@@ -20,5 +20,6 @@ node {
         dockerImageName: imageName,
         dockerImageTag: imageTag,
         dockerRegistryEndpoint: [credentialsId: 'acr', url: "http://$registryServer"]
+
   }
 }

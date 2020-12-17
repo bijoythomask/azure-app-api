@@ -9,15 +9,15 @@ pipeline {
           }
           stage('build') {
             steps{
-                //sh 'mvn clean package'
-                withCredentials([azureServicePrincipal('azure_service_principal')]) {
+                sh 'mvn clean package'
+                //withCredentials([azureServicePrincipal('azure_service_principal')]) {
                   // login to Azure
-                  sh '''
-                    az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
-                    az account set -s $AZURE_SUBSCRIPTION_ID
-                  '''
-                  sh 'az acr login -n delsreg && mvn compile jib:build'
-                }
+                  //sh '''
+                  //  az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
+                  //  az account set -s $AZURE_SUBSCRIPTION_ID
+                  //'''
+                  //sh 'az acr login -n delsreg && mvn compile jib:build'
+                //}
             }
           }
           stage('deploy') {
@@ -49,8 +49,8 @@ pipeline {
 
                       azureWebAppPublish azureCredentialsId: 'azure_service_principal', publishType: 'docker',
                                          resourceGroup: 'dels-jenkins-rg', appName: 'azure-app-api',
-                                         dockerImageName: 'azure-app-api', dockerImageTag: 'latest',
-                                         dockerRegistryEndpoint: [credentialsId: 'delsreg-cred', url: "delsreg.azurecr.io"]
+                                         dockerImageName: 'azure-app-api', dockerImageTag: '',
+                                         dockerRegistryEndpoint: [credentialsId: 'delsreg-cred', url: "https://delsreg.azurecr.io"]
 
                       sh 'az logout'
 

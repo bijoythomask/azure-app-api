@@ -54,7 +54,9 @@ pipeline {
 //                                          dockerImageTag: '',
 //                                          dockerRegistryEndpoint: [credentialsId: 'delsreg-cred', url: "https://delsreg.azurecr.io"]
 
-                      azureWebAppPublish appName: 'azure-app-api', azureCredentialsId: 'azure_service_principal', dockerImageName: 'azure-app-api', dockerImageTag: '', dockerRegistryEndpoint: [credentialsId: 'delsreg-cred', url: 'https://delsreg.azurecr.io'], filePath: '', publishType: 'docker', resourceGroup: 'dels-jenkins-rg', slotName: '', sourceDirectory: '', targetDirectory: ''
+                        script{
+                        azureWebAppPublish appName: 'azure-app-api', azureCredentialsId: 'azure_service_principal', dockerImageName: 'azure-app-api', dockerImageTag: '', dockerRegistryEndpoint: [credentialsId: 'delsreg-cred', url: 'https://delsreg.azurecr.io'], filePath: '', publishType: 'docker', resourceGroup: 'dels-jenkins-rg', slotName: '', sourceDirectory: '', targetDirectory: ''
+                        }
 
 //                       sh 'az logout'
 

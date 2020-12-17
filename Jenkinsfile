@@ -22,7 +22,7 @@ pipeline {
           }
           stage('deploy') {
             environment {
-                CLIENT_ID = sh (script:'az webapp identity assign --resource-group dels-jenkins-rg --name azure-app-api --query principalId --output tsv',, returnStdout: true).trim()
+                //CLIENT_ID = sh (script:'az webapp identity assign --resource-group dels-jenkins-rg --name azure-app-api --query principalId --output tsv',, returnStdout: true).trim()
             }
             steps {
                 withCredentials([azureServicePrincipal('azure_service_principal')]) {
@@ -49,7 +49,8 @@ pipeline {
 
                       azureWebAppPublish azureCredentialsId: 'azure_service_principal', publishType: 'docker',
                                          resourceGroup: 'dels-jenkins-rg', appName: 'azure-app-api',
-                                         dockerImageName: 'delsreg.azurecr.io/azure-app-api', dockerImageTag: 'latest'
+                                         dockerImageName: 'delsreg.azurecr.io/azure-app-api', dockerImageTag: 'latest',
+                                         dockerRegistryEndpoint: [credentialsId: '', url: "delsreg.azurecr.io"]
 
                       sh 'az logout'
 

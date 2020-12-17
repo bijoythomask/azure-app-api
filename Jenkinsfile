@@ -49,8 +49,7 @@ pipeline {
 
                       azureWebAppPublish azureCredentialsId: 'azure_service_principal', publishType: 'docker',
                                          resourceGroup: 'dels-jenkins-rg', appName: 'azure-app-api',
-                                         dockerImageName: 'delsreg.azurecr.io/azure-app-api', dockerImageTag: 'latest',
-                                         dockerRegistryEndpoint: [credentialsId: '', url: ""]
+                                         dockerImageName: 'delsreg.azurecr.io/azure-app-api', dockerImageTag: 'latest'
 
                       sh 'az logout'
 

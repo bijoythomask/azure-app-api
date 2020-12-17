@@ -47,7 +47,7 @@ pipeline {
 
 
 
-                      sh 'az role assignment create --assignee CLIENT_ID --scope /subscriptions/$AZURE_SUBSCRIPTION_ID/resourceGroups/dels-jenkins-rg/providers/Microsoft.ContainerRegistry/registries/delsreg --role AcrPull'
+                      sh 'az role assignment create --assignee $CLIENT_ID --scope /subscriptions/$AZURE_SUBSCRIPTION_ID/resourceGroups/dels-jenkins-rg/providers/Microsoft.ContainerRegistry/registries/delsreg --role AcrPull'
 
                       sh 'az logout'
 

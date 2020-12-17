@@ -13,6 +13,12 @@ node {
     def registryServer = 'delsreg.azurecr.io'
     def imageTag = sh script: 'git describe | tr -d "\n"', returnStdout: true
     def imageName = "$registryServer/calculator"
-    azureWebAppPublish azureCredentialsId: '<mySp>', publishType: 'docker', resourceGroup: resourceGroup, appName: webAppName, dockerImageName: imageName, dockerImageTag: imageTag, dockerRegistryEndpoint: [credentialsId: 'acr', url: "http://$registryServer"]
+    azureWebAppPublish azureCredentialsId: 'azure_service_principal',
+        publishType: 'docker',
+        resourceGroup: resourceGroup,
+        appName: webAppName,
+        dockerImageName: imageName,
+        dockerImageTag: imageTag,
+        dockerRegistryEndpoint: [credentialsId: 'acr', url: "http://$registryServer"]
   }
 }

@@ -34,7 +34,19 @@ pipeline {
                       //sh 'az spring-cloud app deploy -n gateway --jar-path ./gateway/target/gateway.jar'
                       //sh 'az spring-cloud app deploy -n account-service --jar-path ./account-service/target/account-service.jar'
                       //sh 'az spring-cloud app deploy -n auth-service --jar-path ./auth-service/target/auth-service.jar'
+
+                      sh 'az appservice plan create --name AppSvc-Dels-plan --resource-group dels-jenkins-rg --is-linux'
+
+                      sh 'az webapp create --resource-group dels-jenkins-rg --plan AppSvc-Dels-plan --name azure-app-api --deployment-container-image-name delsreg.azurecr.io/azure-app-api:latest'
+
+                      sh 'az webapp config appsettings set --resource-group dels-jenkins-rg --name azure-app-api --settings SERVER_PORT=8000'
+
+                      sh 'az webapp identity assign --resource-group dels-jenkins-rg --name azure-app-api --query principalId --output tsv'
+
+                      sh 'az role assignment create --assignee $AZURE_CLIENT_ID --scope /subscriptions/$AZURE_SUBSCRIPTION_ID/resourceGroups/delsreg/providers/Microsoft.ContainerRegistry/registries/delsreg --role AcrPull'
+
                       sh 'az logout'
+
                     }
                 }
           }

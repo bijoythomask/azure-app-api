@@ -39,15 +39,18 @@ pipeline {
                       //sh 'az spring-cloud app deploy -n account-service --jar-path ./account-service/target/account-service.jar'
                       //sh 'az spring-cloud app deploy -n auth-service --jar-path ./auth-service/target/auth-service.jar'
 
-                      sh 'az appservice plan create --name AppSvc-Dels-plan --resource-group dels-jenkins-rg --is-linux'
+                      //sh 'az appservice plan create --name AppSvc-Dels-plan --resource-group dels-jenkins-rg --is-linux'
 
-                      sh 'az webapp create --resource-group dels-jenkins-rg --plan AppSvc-Dels-plan --name azure-app-api --deployment-container-image-name delsreg.azurecr.io/azure-app-api:latest'
+                      //sh 'az webapp create --resource-group dels-jenkins-rg --plan AppSvc-Dels-plan --name azure-app-api --deployment-container-image-name delsreg.azurecr.io/azure-app-api:latest'
 
-                      sh 'az webapp config appsettings set --resource-group dels-jenkins-rg --name azure-app-api --settings SERVER_PORT=8000'
+                      //sh 'az webapp config appsettings set --resource-group dels-jenkins-rg --name azure-app-api --settings SERVER_PORT=8000'
 
+                      //sh 'az role assignment create --assignee $CLIENT_ID --scope /subscriptions/$AZURE_SUBSCRIPTION_ID/resourceGroups/dels-jenkins-rg/providers/Microsoft.ContainerRegistry/registries/delsreg --role AcrPull'
 
-
-                      sh 'az role assignment create --assignee $CLIENT_ID --scope /subscriptions/$AZURE_SUBSCRIPTION_ID/resourceGroups/dels-jenkins-rg/providers/Microsoft.ContainerRegistry/registries/delsreg --role AcrPull'
+                      azureWebAppPublish azureCredentialsId: 'azure_service_principal', publishType: 'docker',
+                                         resourceGroup: 'dels-jenkins-rg', appName: 'azure-app-api',
+                                         dockerImageName: 'delsreg.azurecr.io/azure-app-api', dockerImageTag: 'latest',
+                                         dockerRegistryEndpoint: []
 
                       sh 'az logout'
 

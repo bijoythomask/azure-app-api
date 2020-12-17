@@ -47,10 +47,7 @@ pipeline {
 
                       //sh 'az role assignment create --assignee $CLIENT_ID --scope /subscriptions/$AZURE_SUBSCRIPTION_ID/resourceGroups/dels-jenkins-rg/providers/Microsoft.ContainerRegistry/registries/delsreg --role AcrPull'
 
-                      azureWebAppPublish azureCredentialsId: 'azure_service_principal', publishType: 'docker',
-                                         resourceGroup: 'dels-jenkins-rg', appName: 'azure-app-api',
-                                         dockerImageName: 'delsreg.azurecr.io/azure-app-api', dockerImageTag: 'latest',
-                                         dockerRegistryEndpoint: [credentialsId: 'azure_service_principal', url: "delsreg.azurecr.io"]
+                      azureWebAppPublish appName: 'dels-docker-app', azureCredentialsId: 'azure_service_principal', dockerImageName: '', dockerImageTag: '', dockerRegistryEndpoint: [], filePath: '', publishType: 'file', resourceGroup: 'dels-jenkins-rg', slotName: '', sourceDirectory: '', targetDirectory: ''
 
                       sh 'az logout'
 

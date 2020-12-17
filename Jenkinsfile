@@ -20,6 +20,5 @@ node {
         dockerImageName: imageName,
         dockerImageTag: imageTag,
         dockerRegistryEndpoint: [credentialsId: 'delsreg', url: "http://$registryServer"]
-
   }
 }

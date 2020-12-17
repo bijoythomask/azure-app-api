@@ -32,7 +32,7 @@ pipeline {
                         az account set -s $AZURE_SUBSCRIPTION_ID
                       '''
                       // Set default resource group name and service name. Replace <resource group name> and <service name> with the right values
-                      sh 'az configure --defaults group=dels-jenkins-rg'
+                      //sh 'az configure --defaults group=dels-jenkins-rg'
                       //sh 'az configure --defaults spring-cloud=<service name>'
                       // Deploy applications
                       //sh 'az spring-cloud app deploy -n gateway --jar-path ./gateway/target/gateway.jar'
@@ -50,7 +50,7 @@ pipeline {
                       azureWebAppPublish azureCredentialsId: 'azure_service_principal', publishType: 'docker',
                                          resourceGroup: 'dels-jenkins-rg', appName: 'azure-app-api',
                                          dockerImageName: 'delsreg.azurecr.io/azure-app-api', dockerImageTag: 'latest',
-                                         dockerRegistryEndpoint: [credentialsId: '', url: "delsreg.azurecr.io"]
+                                         dockerRegistryEndpoint: [url: "delsreg.azurecr.io"]
 
                       sh 'az logout'
 

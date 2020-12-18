@@ -28,6 +28,12 @@ node {
       }
     }
 
+    stage('Test KV') {
+        azureKeyVault(credentialID: 'azure_service_principal', secrets: [[envVariable: 'test', name: 'test', secretType: 'Secret'], [envVariable: 'PROD-VAULT-URL', name: 'prod-vault-url', secretType: 'Secret']]) {
+            sh 'echo $test, $PROD-VAULT-URL'
+        }
+    }
+
     stage('deploy') {
 
     withCredentials([azureServicePrincipal('azure_service_principal')]) {

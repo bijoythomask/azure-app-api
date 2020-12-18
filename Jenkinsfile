@@ -37,7 +37,7 @@ node {
           az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
           az account set -s $AZURE_SUBSCRIPTION_ID
           '''
-        sh  "az webapp restart --name dels-docker-app --resource-group dels-jenkins-rg"
+        sh  "az webapp restart --name ${webAppName} --resource-group ${resourceGroup}"
 
     }
   }

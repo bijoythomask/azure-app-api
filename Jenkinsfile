@@ -19,7 +19,7 @@ node {
           az account set -s $AZURE_SUBSCRIPTION_ID
           az acr login -n delsreg
           docker build --tag delsreg.azurecr.io/azure-app-api:latest .
-          docker push delsreg.azurecr.io/azure-app-api:latest:latest
+          docker push delsreg.azurecr.io/azure-app-api:latest
         '''
       }
     }

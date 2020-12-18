@@ -5,12 +5,10 @@ node {
   }
 
   stage('build') {
-    withCredentials([azureServicePrincipal('azure_service_principal')]) {
-      // login to Azure
-      sh '''
-         sh 'mvn clean package'
-      '''
-    }
+        sh '''
+            mvn clean package
+        '''
+
   }
 
   stage('Push to ACR') {

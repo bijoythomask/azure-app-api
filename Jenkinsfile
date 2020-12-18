@@ -1,17 +1,21 @@
 node {
+    def resourceGroup = 'dels-jenkins-rg'
+    def webAppName = 'dels-docker-app'
+    def registryServer = 'delsreg.azurecr.io'
+    def imageTag = sh script: 'git describe | tr -d "\n"', returnStdout: true
+    def imageName = "$registryServer/calculator"
 
-  stage('init') {
+    stage('init') {
     checkout scm
-  }
+    }
 
-  stage('build') {
+    stage('build') {
         sh '''
             mvn clean package
         '''
+    }
 
-  }
-
-  stage('Push to ACR') {
+    stage('Push to ACR') {
       withCredentials([azureServicePrincipal('azure_service_principal')]) {
         // login to Azure
         sh '''
@@ -24,12 +28,7 @@ node {
       }
     }
 
-  stage('deploy') {
-    def resourceGroup = 'dels-jenkins-rg'
-    def webAppName = 'dels-docker-app'
-    def registryServer = 'delsreg.azurecr.io'
-    def imageTag = sh script: 'git describe | tr -d "\n"', returnStdout: true
-    def imageName = "$registryServer/calculator"
+    stage('deploy') {
 
     withCredentials([azureServicePrincipal('azure_service_principal')]) {
         // login to Azure
@@ -40,5 +39,5 @@ node {
         sh  "az webapp restart --name ${webAppName} --resource-group ${resourceGroup}"
 
     }
-  }
+    }
 }

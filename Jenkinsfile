@@ -1,4 +1,5 @@
 node {
+
   stage('init') {
     checkout scm
   }
@@ -6,15 +7,24 @@ node {
   stage('build') {
     withCredentials([azureServicePrincipal('azure_service_principal')]) {
       // login to Azure
-      //         az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
-      //         az account set -s $AZURE_SUBSCRIPTION_ID
-      //         az acr login -n delsreg
       sh '''
-
-        mvn compile jib:build
+         sh 'mvn clean package'
       '''
     }
   }
+
+  stage('Push to ACR') {
+      withCredentials([azureServicePrincipal('azure_service_principal')]) {
+        // login to Azure
+        sh '''
+          az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
+          az account set -s $AZURE_SUBSCRIPTION_ID
+          az acr login -n delsreg
+          docker build --tag delsreg.azurecr.io/azure-app-api:latest .
+          docker push delsreg.azurecr.io/azure-app-api:latest:latest
+        '''
+      }
+    }
 
   stage('deploy') {
     def resourceGroup = 'dels-jenkins-rg'
@@ -22,12 +32,5 @@ node {
     def registryServer = 'delsreg.azurecr.io'
     def imageTag = sh script: 'git describe | tr -d "\n"', returnStdout: true
     def imageName = "$registryServer/calculator"
-    azureWebAppPublish azureCredentialsId: 'azure_service_principal',
-        publishType: 'docker',
-        resourceGroup: resourceGroup,
-        appName: webAppName,
-//         dockerImageName: imageName,
-//         dockerImageTag: imageTag,
-        dockerRegistryEndpoint: [credentialsId: 'delsreg']
   }
 }

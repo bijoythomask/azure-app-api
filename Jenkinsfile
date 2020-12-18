@@ -30,5 +30,15 @@ node {
     def registryServer = 'delsreg.azurecr.io'
     def imageTag = sh script: 'git describe | tr -d "\n"', returnStdout: true
     def imageName = "$registryServer/calculator"
+
+    withCredentials([azureServicePrincipal('azure_service_principal')]) {
+        // login to Azure
+        sh '''
+          az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
+          az account set -s $AZURE_SUBSCRIPTION_ID
+          az webapp restart --name $dels-docker-app --resource-group $dels-jenkins-rg
+        '''
+    }
+
   }
 }
